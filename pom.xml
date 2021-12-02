@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.zou</groupId>
+    <artifactId>e-rpc_1.0.0</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>rpc-all</module>
+        <module>rpc-client</module>
+        <module>rpc-common</module>
+        <module>rpc-register</module>
+        <module>rpc-server</module>
+        <module>rpc-test</module>
+        <module>register-choice-test</module>
+    </modules>
+
+    <properties>
+
+        <!--============================== INTER ==============================-->
+        <heaven.version>0.1.144</heaven.version>
+        <log-integration.version>1.1.8</log-integration.version>
+
+        <junit.version>4.12</junit.version>
+        <netty.version>4.1.42.Final</netty.version>
+        <lombok.version>1.16.16</lombok.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!--============================== SELF ==============================-->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>rpc-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>rpc-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>rpc-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>rpc-register</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>rpc-all</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!--============================== INTER ==============================-->
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>heaven</artifactId>
+                <version>${heaven.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>log-integration</artifactId>
+                <version>${log-integration.version}</version>
+            </dependency>
+
+
+            <!--============================== OTHER ==============================-->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+
+
+
+        </dependencies>
+    </dependencyManagement>
+
+
+
+</project>
