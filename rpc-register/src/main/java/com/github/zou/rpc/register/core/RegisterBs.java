@@ -55,7 +55,7 @@ public class RegisterBs implements RegisterConfig {
 
     @Override
     public RegisterBs start() {
-        ChannelHandler channelHandler = ChannelHandlers.objectCodecHandler(new RegisterCenterServerHandler());
+        ChannelHandler channelHandler = ChannelHandlers.objectCodecHandler(new RegisterCenterServerHandler(registerServerService,registerClientService));
         DefaultNettyServer.newInstance(port, channelHandler).asyncRun();
 
         // 通知对应的服务端和客户端，服务启动。

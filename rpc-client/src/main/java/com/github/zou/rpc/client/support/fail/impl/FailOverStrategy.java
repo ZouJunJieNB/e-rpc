@@ -29,7 +29,8 @@ class FailOverStrategy implements FailStrategy {
         } catch (Exception e) {
             Throwable throwable = e.getCause();
             if(throwable instanceof RpcTimeoutException) {
-                throw new RpcRuntimeException();
+//                e.printStackTrace();
+                throw new RpcRuntimeException(e.getMessage());
             }
 
             // 进行失败重试。
@@ -42,6 +43,7 @@ class FailOverStrategy implements FailStrategy {
                         .remoteInvoke(context);
             } else {
                 throw e;
+//                e.printStackTrace();
             }
         }
     }

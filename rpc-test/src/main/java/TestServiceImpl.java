@@ -4,7 +4,12 @@
  */
 public class TestServiceImpl implements TestService{
     @Override
-    public String sayHello() {
+    public String sayHello()  {
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         return "hello";
     }
 }

@@ -41,10 +41,11 @@ public class DefaultInvokeManager implements InvokeManager {
     public DefaultInvokeManager() {
         requestMap = new ConcurrentHashMap<>();
         responseMap = new ConcurrentHashMap<>();
-
-        final Runnable timeoutThread = new InvokeTimeoutCheckThread(requestMap, responseMap);
-        Executors.newScheduledThreadPool(1)
-                .scheduleAtFixedRate(timeoutThread,60, 60, TimeUnit.SECONDS);
+        // todo 定时器没卵用，后期直接优化掉，这里会造成死锁问题
+        // todo 后期将超时时间安排到调用的那块
+//        final Runnable timeoutThread = new InvokeTimeoutCheckThread(requestMap, responseMap);
+//        Executors.newScheduledThreadPool(1)
+//                .scheduleAtFixedRate(timeoutThread,1, 1, TimeUnit.SECONDS);
     }
 
     @Override

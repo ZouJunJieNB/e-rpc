@@ -43,8 +43,8 @@ public class RegisterCenterServerHandler extends SimpleChannelInboundHandler {
      */
     private final RpcRegister rpcRegister;
 
-    public RegisterCenterServerHandler() {
-        this.rpcRegister = this.buildSimpleRpcRegister();
+    public RegisterCenterServerHandler(RegisterServerService registerServerService,RegisterClientService registerClientService) {
+        this.rpcRegister = this.buildSimpleRpcRegister(registerServerService,registerClientService);
     }
 
     @Override
@@ -102,9 +102,7 @@ public class RegisterCenterServerHandler extends SimpleChannelInboundHandler {
      * @return 注册实现
      * @since 1.0.0
      */
-    private RpcRegister buildSimpleRpcRegister() {
-        final RegisterServerService registerServerService = new DefaultRegisterServerService();
-        final RegisterClientService registerClientService = new DefaultRegisterClientService();
+    private RpcRegister buildSimpleRpcRegister(RegisterServerService registerServerService,RegisterClientService registerClientService) {
         return new SimpleRpcRegister(registerServerService, registerClientService);
     }
 

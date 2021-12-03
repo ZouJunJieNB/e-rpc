@@ -20,6 +20,8 @@ public class Client {
         TestService testService = config.reference();
 
         System.out.println(testService.sayHello());
+        System.out.println("继续往下走");
+        System.out.println(testService.sayHello());
 
     }
 }

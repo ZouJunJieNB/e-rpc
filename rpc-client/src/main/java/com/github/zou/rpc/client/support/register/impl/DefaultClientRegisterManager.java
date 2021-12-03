@@ -110,7 +110,7 @@ public class DefaultClientRegisterManager implements ClientRegisterManager {
         this.subscribeServerIdSet = new HashSet<>();
 
         final Runnable runnable = new LocalChannelFutureThread();
-        EXECUTOR_SERVICE.schedule(runnable, 60, TimeUnit.SECONDS);
+//        EXECUTOR_SERVICE.schedule(runnable, 10, TimeUnit.SECONDS);
     }
 
     private class LocalChannelFutureThread implements Runnable {
@@ -596,7 +596,7 @@ public class DefaultClientRegisterManager implements ClientRegisterManager {
                 RpcResponse rpcResponse = invokeManager.getResponse(seqId);
                 return (List<ServiceEntry>) RpcResponses.getResult(rpcResponse);
             } catch (Exception exception) {
-                log.warn("注册中心查询异常，继续尝试其他服务器。", exception);
+                log.warn("注册中心查询异常，继续尝试其他服务器。{}", exception);
             }
         }
 
@@ -617,8 +617,9 @@ public class DefaultClientRegisterManager implements ClientRegisterManager {
             String key = buildKey(rpcAddress);
 
             RpcChannelFuture oldChannel = registerCenterChannelMap.get(key);
-            if(oldChannel != null) {
+            if(oldChannel != null && oldChannel.channelFuture().channel().isActive()) {
                 // 已经存在，直接复用
+                // todo 检查channel通道是否健康，如果不是健康的就连接新的
                 rpcChannelFutures.add(oldChannel);
             } else {
                 RpcChannelFuture newChannel = createNewRegisterChannel(rpcAddress);
