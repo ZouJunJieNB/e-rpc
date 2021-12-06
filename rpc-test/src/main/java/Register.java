@@ -1,4 +1,6 @@
+import com.github.zou.rpc.register.constant.enums.RegisterTypeEnum;
 import com.github.zou.rpc.register.core.RegisterBs;
+import com.github.zou.rpc.register.support.register.URL;
 
 /**
  * @author zou
@@ -6,6 +8,7 @@ import com.github.zou.rpc.register.core.RegisterBs;
  */
 public class Register {
     public static void main(String[] args) {
-        RegisterBs.newInstance().start();
+        URL url = new URL("localhost:2181");
+        RegisterBs.newInstance().setTypeEnum(RegisterTypeEnum.ZOOKEEPER).setUrl(url).start();
     }
 }

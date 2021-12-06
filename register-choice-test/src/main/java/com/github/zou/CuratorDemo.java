@@ -33,6 +33,7 @@ public class CuratorDemo {
         String zkConnectionString = "localhost:2181";
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
         CuratorFramework client = CuratorFrameworkFactory.newClient(zkConnectionString, retryPolicy);
+
         client.start();
         for (int i = 0; i < 10; i++) {
             int finalI = i;

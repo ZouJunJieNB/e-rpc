@@ -10,5 +10,9 @@ public class Server {
                 .register("testServiceImpl", new TestServiceImpl())
                 .registerCenter("localhost:8527")
                 .expose();
+
+//        TestService testServiceImplSon = new TestServiceImplSon();
+//        System.out.println(testServiceImplSon.
+//                sayHello());
     }
 }

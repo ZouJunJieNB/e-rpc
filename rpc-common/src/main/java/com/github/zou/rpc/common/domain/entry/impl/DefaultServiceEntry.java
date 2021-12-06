@@ -1,7 +1,3 @@
-/*
- * Copyright (c)  2019. houbinbin Inc.
- * rpc All rights reserved.
- */
 
 package com.github.zou.rpc.common.domain.entry.impl;
 
@@ -48,6 +44,11 @@ class DefaultServiceEntry implements ServiceEntry {
      * 权重信息
      */
     private int weight;
+
+    /**
+     * 是否临时
+     */
+    private boolean temporary;
 
 
     @Override
@@ -139,4 +140,11 @@ class DefaultServiceEntry implements ServiceEntry {
         return result;
     }
 
+    public boolean temporary() {
+        return temporary;
+    }
+
+    public void setTemporary(boolean temporary) {
+        this.temporary = temporary;
+    }
 }

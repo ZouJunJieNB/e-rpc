@@ -12,7 +12,7 @@ import io.netty.channel.Channel;
  * @author zou
  * @since 1.0.0
  */
-public interface RpcRegister {
+public interface RpcRegistry {
 
     /**
      * 注册当前服务信息

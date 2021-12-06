@@ -28,6 +28,7 @@
         <junit.version>4.12</junit.version>
         <netty.version>4.1.42.Final</netty.version>
         <lombok.version>1.16.16</lombok.version>
+        <curator-recipes.version>4.1.0</curator-recipes.version>
     </properties>
 
     <dependencyManagement>
@@ -88,6 +89,20 @@
                 <version>${netty.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>${curator-recipes.version}</version>
+            </dependency>
+
+
+
+            <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.78</version>
+            </dependency>
 
 
 

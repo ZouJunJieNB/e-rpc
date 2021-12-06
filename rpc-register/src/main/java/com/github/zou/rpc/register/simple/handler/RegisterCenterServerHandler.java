@@ -7,12 +7,7 @@ import com.github.zou.rpc.common.domain.entry.ServiceEntry;
 import com.github.zou.rpc.common.domain.message.NotifyMessage;
 import com.github.zou.rpc.common.domain.message.body.ServerHeartbeatBody;
 import com.github.zou.rpc.common.domain.message.impl.NotifyMessages;
-import com.github.zou.rpc.register.simple.SimpleRpcRegister;
-import com.github.zou.rpc.register.simple.client.RegisterClientService;
-import com.github.zou.rpc.register.simple.client.impl.DefaultRegisterClientService;
-import com.github.zou.rpc.register.simple.server.RegisterServerService;
-import com.github.zou.rpc.register.simple.server.impl.DefaultRegisterServerService;
-import com.github.zou.rpc.register.spi.RpcRegister;
+import com.github.zou.rpc.register.spi.RpcRegistry;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -41,10 +36,10 @@ public class RegisterCenterServerHandler extends SimpleChannelInboundHandler {
      * 注册中心服务
      * @since 1.0.0
      */
-    private final RpcRegister rpcRegister;
+    private final RpcRegistry rpcRegister;
 
-    public RegisterCenterServerHandler(RegisterServerService registerServerService,RegisterClientService registerClientService) {
-        this.rpcRegister = this.buildSimpleRpcRegister(registerServerService,registerClientService);
+    public RegisterCenterServerHandler(RpcRegistry rpcRegister) {
+        this.rpcRegister = rpcRegister;
     }
 
     @Override
@@ -97,14 +92,7 @@ public class RegisterCenterServerHandler extends SimpleChannelInboundHandler {
 
     }
 
-    /**
-     * 构建简单注册实现类
-     * @return 注册实现
-     * @since 1.0.0
-     */
-    private RpcRegister buildSimpleRpcRegister(RegisterServerService registerServerService,RegisterClientService registerClientService) {
-        return new SimpleRpcRegister(registerServerService, registerClientService);
-    }
+
 
 
 

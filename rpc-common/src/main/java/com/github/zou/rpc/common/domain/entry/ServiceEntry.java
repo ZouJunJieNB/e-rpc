@@ -60,4 +60,6 @@ public interface ServiceEntry extends Serializable {
      */
     int weight();
 
+    boolean temporary();
+
 }

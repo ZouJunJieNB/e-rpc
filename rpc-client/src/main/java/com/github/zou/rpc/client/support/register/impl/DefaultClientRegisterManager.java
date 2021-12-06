@@ -229,13 +229,14 @@ public class DefaultClientRegisterManager implements ClientRegisterManager {
     @Override
     public void unSubscribeServerAll() {
         log.info("开始取消订阅所有服务端信息");
-
         // TODO: 后续可以优化，添加对应的批处理。
         if(CollectionUtil.isEmpty(subscribeServerIdSet)) {
             log.info("订阅服务器的集合为空，忽略处理");
         } else {
             for(String serviceId : subscribeServerIdSet) {
                 for(RpcChannelFuture rpcChannelFuture : this.registerCenterChannelMap.values()) {
+
+                    System.out.println(rpcChannelFuture.channelFuture().channel().isActive());
                     ServiceEntry serviceEntry = ServiceEntryBuilder.of(serviceId);
                     NotifyMessage subscribeMessage = NotifyMessages.of(MessageTypeConst.CLIENT_UN_SUBSCRIBE_REQ, serviceEntry);
                     // 这里可以直接 oneway

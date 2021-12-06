@@ -1,4 +1,4 @@
-package com.github.zou.rpc.register.simple;
+package com.github.zou.rpc.register.support.register;
 
 
 import com.github.houbb.heaven.util.util.CollectionUtil;
@@ -6,6 +6,7 @@ import com.github.houbb.log.integration.core.Log;
 import com.github.houbb.log.integration.core.LogFactory;
 import com.github.zou.rpc.common.constant.MessageTypeConst;
 import com.github.zou.rpc.common.domain.entry.ServiceEntry;
+import com.github.zou.rpc.common.domain.entry.impl.ServiceEntryBuilder;
 import com.github.zou.rpc.common.domain.message.NotifyMessage;
 import com.github.zou.rpc.common.domain.message.body.ServerHeartbeatBody;
 import com.github.zou.rpc.common.domain.message.impl.NotifyMessages;
@@ -14,32 +15,36 @@ import com.github.zou.rpc.common.rpc.domain.impl.DefaultRpcResponse;
 import com.github.zou.rpc.common.util.IpUtils;
 import com.github.zou.rpc.register.simple.client.RegisterClientService;
 import com.github.zou.rpc.register.simple.server.RegisterServerService;
-import com.github.zou.rpc.register.simple.server.impl.DefaultRegisterServerService;
-import com.github.zou.rpc.register.spi.RpcRegister;
+import com.github.zou.rpc.register.spi.RpcRegistry;
+import com.google.common.collect.Lists;
 import io.netty.channel.Channel;
+import org.w3c.dom.stylesheets.LinkStyle;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import static com.github.zou.rpc.common.constant.PunctuationConst.COLON;
+import static com.github.zou.rpc.common.constant.PunctuationConst.COMMA;
 
 /**
- * <p> 简单的 rpc 注册 </p>
  *
- * （1）各种关系的关系服务类
- * （2）各种关系之间的通讯类
- * （3）domain 层
+ * 注册中心通用缓存层
+ *
+ * 如果每次服务调用都需要调用注册中心实时查询可用服务列表，不但会让注册中心承受巨大的流量压力，还会产生额外的网络请求，导致系统性能下降。
+ * 其次注册中心需要非强依赖，其宕机不能影响正常的服务调用。
+ *
+ * 这里只实现了内存缓存，磁盘缓存暂未实现
  *
  * @author zou
  * @since 1.0.0
  */
-public class SimpleRpcRegister implements RpcRegister {
+public abstract class AbstractRpcRegistry implements RpcRegistry {
 
-    private static final Log log = LogFactory.getLog(DefaultRegisterServerService.class);
+    private static final Log log = LogFactory.getLog(AbstractRpcRegistry.class);
 
     /**
      * 服务端信息管理
@@ -59,19 +64,13 @@ public class SimpleRpcRegister implements RpcRegister {
      */
     private final Map<String, Long> serverHeartbeatMap;
 
-    /**
-     * 服务端心跳定时处理
-     * @since 0.2.0
-     */
-    private final ScheduledExecutorService serverHeartBeatExecutor;
-
-    public SimpleRpcRegister(RegisterServerService registerServerService, RegisterClientService registerClientService) {
+    public AbstractRpcRegistry(RegisterServerService registerServerService, RegisterClientService registerClientService) {
         this.registerServerService = registerServerService;
         this.registerClientService = registerClientService;
-
         this.serverHeartbeatMap = new ConcurrentHashMap<>();
-        this.serverHeartBeatExecutor = Executors.newSingleThreadScheduledExecutor();
 
+        // 服务端心跳定时处理。转为局部变量
+        ScheduledExecutorService serverHeartBeatExecutor = Executors.newSingleThreadScheduledExecutor();
         final Runnable runnable = new ServerHeartBeatThread();
         serverHeartBeatExecutor.scheduleAtFixedRate(runnable, 60, 60, TimeUnit.SECONDS);
     }
@@ -141,7 +140,6 @@ public class SimpleRpcRegister implements RpcRegister {
     @Override
     public void register(ServiceEntry serviceEntry, Channel channel) {
         List<ServiceEntry> serviceEntryList = registerServerService.register(serviceEntry, channel);
-
         // 通知监听者
         registerClientService.registerNotify(serviceEntry.serviceId(), serviceEntry);
     }
@@ -169,13 +167,22 @@ public class SimpleRpcRegister implements RpcRegister {
         final String serviceId = clientEntry.serviceId();
         List<ServiceEntry> serviceEntryList = registerServerService.lookUp(serviceId);
 
+        List<ServiceEntry> newArray = mergeServiceEntryList(serviceEntryList,doLookUp(serviceId));
+
         // 回写
         // 为了复用原先的相应结果，此处直接使用 rpc response
         RpcResponse rpcResponse = DefaultRpcResponse.newInstance().seqId(seqId)
-                .result(serviceEntryList);
+                .result(newArray);
         NotifyMessage notifyMessage = NotifyMessages.of(MessageTypeConst.CLIENT_LOOK_UP_SERVER_RESP, seqId, rpcResponse);
         channel.writeAndFlush(notifyMessage);
     }
+
+    /**
+     * 调用具体注册中心的服务
+     * @param serviceId
+     * @return
+     */
+    public abstract List<ServiceEntry> doLookUp(String serviceId);
 
     @Override
     public void serverHeartbeat(ServerHeartbeatBody heartbeatBody, Channel channel) {
@@ -188,5 +195,51 @@ public class SimpleRpcRegister implements RpcRegister {
         serverHeartbeatMap.put(key, time);
         log.debug("[HEARTBEAT] 接收到服务端的心跳 {}", heartbeatBody);
     }
+
+    protected List<ServiceEntry> convertServiceEntry(List<String> stringList,String serverId){
+        List<ServiceEntry> resultList = Lists.newArrayList();
+
+        if(CollectionUtil.isEmpty(stringList)){
+            return resultList;
+        }
+
+        for (String s : stringList) {
+            String[] split = s.split(COLON);
+            ServiceEntry serviceEntry = ServiceEntryBuilder.of(serverId, split[0], Integer.parseInt(split[1]));
+            resultList.add(serviceEntry);
+        }
+        return resultList;
+    }
+
+    private static List<ServiceEntry> mergeServiceEntryList(List<ServiceEntry> args1, List<ServiceEntry> args2){
+        if(CollectionUtil.isEmpty(args1) && CollectionUtil.isEmpty(args2)){
+            return Lists.newArrayList();
+        }
+
+        if(CollectionUtil.isEmpty(args1)){
+            return args2;
+        }
+
+        if(CollectionUtil.isEmpty(args2)){
+            return args1;
+        }
+
+        // Arrays.asList()操作过的数组,得到的list是只读的,调用add(),remove()方法实际是调用的abstracList中的方法
+        // 所以这里报错请注意
+        args1.addAll(args2);
+
+        // 过滤掉相同的服务
+        return args1.stream().collect(Collectors.collectingAndThen(
+                Collectors.toCollection(()->
+                        new TreeSet<>(Comparator.comparing(
+                                // 多条件
+                                s->s.port()+s.ip()
+                        ))
+                ),ArrayList::new
+
+        ));
+    }
+
+
 
 }
