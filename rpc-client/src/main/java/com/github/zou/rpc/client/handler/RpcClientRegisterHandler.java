@@ -92,8 +92,8 @@ public class RpcClientRegisterHandler extends SimpleChannelInboundHandler {
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         // 每次用完要关闭，不然拿不到response
-        ctx.flush();
-        ctx.close();
+//        ctx.flush();
+//        ctx.close();
     }
 
     @Override
