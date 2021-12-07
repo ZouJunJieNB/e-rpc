@@ -127,4 +127,10 @@ public class RpcServerHandler extends SimpleChannelInboundHandler {
         return rpcResponse;
     }
 
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("客户端断开链接" + ctx.channel().localAddress().toString());
+    }
+
+
 }

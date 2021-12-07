@@ -110,7 +110,7 @@ public class DefaultClientRegisterManager implements ClientRegisterManager {
         this.subscribeServerIdSet = new HashSet<>();
 
         final Runnable runnable = new LocalChannelFutureThread();
-//        EXECUTOR_SERVICE.schedule(runnable, 10, TimeUnit.SECONDS);
+        EXECUTOR_SERVICE.schedule(runnable, 10, TimeUnit.SECONDS);
     }
 
     private class LocalChannelFutureThread implements Runnable {
@@ -592,7 +592,6 @@ public class DefaultClientRegisterManager implements ClientRegisterManager {
                 final String seqId = lookUpMessage.seqId();
                 invokeManager.addRequest(seqId, registerCenterTimeOut);
                 channelFuture.channel().writeAndFlush(lookUpMessage);
-
                 //4. 等待查询结果
                 RpcResponse rpcResponse = invokeManager.getResponse(seqId);
                 return (List<ServiceEntry>) RpcResponses.getResult(rpcResponse);
@@ -600,7 +599,6 @@ public class DefaultClientRegisterManager implements ClientRegisterManager {
                 log.warn("注册中心查询异常，继续尝试其他服务器。{}", exception);
             }
         }
-
         throw new RpcRuntimeException("服务端发现失败，请检查注册中心服务是否正常。");
     }
 
@@ -626,8 +624,8 @@ public class DefaultClientRegisterManager implements ClientRegisterManager {
                 RpcChannelFuture newChannel = createNewRegisterChannel(rpcAddress);
                 rpcChannelFutures.add(newChannel);
             }
-        }
 
+        }
         return rpcChannelFutures;
     }
 

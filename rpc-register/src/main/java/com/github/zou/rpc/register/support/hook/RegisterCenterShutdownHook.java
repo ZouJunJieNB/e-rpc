@@ -56,10 +56,11 @@ public class RegisterCenterShutdownHook extends AbstractShutdownHook {
             channel.writeAndFlush(notifyMessage);
         }
 
-        //2. 通知所有的客户端 todo 但是这里有个bug，不知道为什么客户端连接过来的channel会关闭，而这里保存的客户端的channel也会关闭。待修复。不过并不影响实际使用
+        //2. 通知所有的客户端
         Collection<Channel> clientList = registerClientService.channels();
         for(Channel channel : clientList) {
             channel.writeAndFlush(notifyMessage);
+            System.out.println(channel.isActive());
         }
         try {
             // 休眠两秒，因为channel发送是异步的，可能已经结束了但是还没及时推送过去
