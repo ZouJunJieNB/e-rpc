@@ -33,6 +33,16 @@ public interface ServiceRegistry {
 
     /**
      * 注册服务实现
+     * @param serviceId 服务标识
+     * @param serviceImpl 服务实现
+     * @param delayInMills 延迟暴露
+     * @return this
+     * @since 0.0.6
+     */
+    ServiceRegistry register(final String serviceId, final Object serviceImpl,long delayInMills);
+
+    /**
+     * 注册服务实现
      * @param serviceConfig 服务配置
      * @return this
      * @since 0.1.7
@@ -56,5 +66,7 @@ public interface ServiceRegistry {
      * @since 1.0.0
      */
     ServiceRegistry registerCenter(final String addresses);
+
+    boolean isExpose();
 
 }

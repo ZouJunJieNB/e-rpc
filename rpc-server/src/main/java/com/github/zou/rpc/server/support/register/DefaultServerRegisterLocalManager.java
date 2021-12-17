@@ -156,7 +156,7 @@ public class DefaultServerRegisterLocalManager implements ServerRegisterManager 
         registerCenterChannelMap.put(key, channel);
         log.info("[Rpc Server] 添加注册中心地址：{} 对应的 channel 信息", rpcAddress);
 
-        // 针对这一个心的机器，重新注册服务
+        // 针对这一个新的机器，重新注册服务
         Collection<ServiceEntry> serviceEntries = serviceEntryMap.values();
         if(CollectionUtil.isEmpty(serviceEntries)) {
             log.info("[Rpc Server] 对应的服务列表为空，无需通知注册中心。");

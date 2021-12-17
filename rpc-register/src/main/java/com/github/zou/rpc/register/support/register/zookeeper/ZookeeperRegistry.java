@@ -39,6 +39,7 @@ public class ZookeeperRegistry extends FailBackRegistry {
     private final ZookeeperClient zkClient;
 
     private final String SERVER = "server";
+
     private final String CLIENT = "client";
 
     public ZookeeperRegistry(URL url,RegisterServerService registerServerService, RegisterClientService registerClientService) {

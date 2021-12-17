@@ -15,8 +15,8 @@
         <module>rpc-common</module>
         <module>rpc-register</module>
         <module>rpc-server</module>
-        <module>rpc-test</module>
-        <module>register-choice-test</module>
+        <module>test-api</module>
+        <module>rpc-config</module>
     </modules>
 
     <properties>
@@ -29,6 +29,7 @@
         <netty.version>4.1.42.Final</netty.version>
         <lombok.version>1.16.16</lombok.version>
         <curator-recipes.version>4.1.0</curator-recipes.version>
+        <spring-boot-starter.version>2.6.1</spring-boot-starter.version>
     </properties>
 
     <dependencyManagement>
@@ -58,6 +59,12 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>rpc-all</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.zou</groupId>
+                <artifactId>rpc-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -95,13 +102,24 @@
                 <version>${curator-recipes.version}</version>
             </dependency>
 
-
-
             <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>1.2.78</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring-boot-starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <optional>true</optional>
+                <version>${spring-boot-starter.version}</version>
             </dependency>
 
 

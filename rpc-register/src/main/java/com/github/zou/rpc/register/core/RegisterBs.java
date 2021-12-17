@@ -16,6 +16,8 @@ import com.github.zou.rpc.register.support.hook.RegisterCenterShutdownHook;
 import com.github.zou.rpc.register.support.register.RegistryFactory;
 import io.netty.channel.ChannelHandler;
 
+import static com.github.zou.rpc.common.util.IpUtils.registerPort;
+
 /**
  * 默认注册中心配置
  * @author zou
@@ -49,7 +51,7 @@ public class RegisterBs implements RegisterConfig {
 
     public static RegisterBs newInstance() {
         RegisterBs registerBs = new RegisterBs();
-        registerBs.port(8527);
+        registerBs.port(registerPort());
         return registerBs;
     }
 
