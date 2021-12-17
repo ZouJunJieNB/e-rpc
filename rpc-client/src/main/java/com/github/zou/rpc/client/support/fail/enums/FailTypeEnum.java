@@ -1,5 +1,10 @@
 package com.github.zou.rpc.client.support.fail.enums;
 
+import com.github.zou.rpc.common.constant.enums.CallTypeEnum;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 失败类型枚举
  * @author zou
@@ -23,6 +28,7 @@ public enum FailTypeEnum {
     ;
 
     private final int code;
+
 
     FailTypeEnum(int code) {
         this.code = code;

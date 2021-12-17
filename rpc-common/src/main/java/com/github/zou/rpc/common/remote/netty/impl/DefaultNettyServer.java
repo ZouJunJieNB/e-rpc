@@ -15,6 +15,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
+import static com.github.zou.rpc.common.util.IpUtils.registerPort;
+
 /**
  * netty 网络服务端
  * @author zou
@@ -83,7 +85,6 @@ public class DefaultNettyServer extends AbstractNettyServer {
             throw new RpcRuntimeException(e);
         }
     }
-
     @Override
     public void destroy() {
         try {

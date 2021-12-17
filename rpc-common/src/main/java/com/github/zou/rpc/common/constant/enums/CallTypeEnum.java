@@ -1,5 +1,9 @@
 package com.github.zou.rpc.common.constant.enums;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 调用方式枚举
  * （1）调用方式，是一种非常固定的模式。所以使用枚举代替常量。
@@ -31,6 +35,7 @@ public enum CallTypeEnum {
     ;
 
     private final int code;
+
 
     CallTypeEnum(int code) {
         this.code = code;

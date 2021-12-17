@@ -166,8 +166,8 @@ public abstract class AbstractRpcRegistry implements RpcRegistry {
     public void lookUp(String seqId, ServiceEntry clientEntry, Channel channel) {
         final String serviceId = clientEntry.serviceId();
         List<ServiceEntry> serviceEntryList = registerServerService.lookUp(serviceId);
-
-        List<ServiceEntry> newArray = mergeServiceEntryList(serviceEntryList,doLookUp(serviceId));
+        List<ServiceEntry> zookeeperServiceList = doLookUp(serviceId);
+        List<ServiceEntry> newArray = mergeServiceEntryList(serviceEntryList,zookeeperServiceList);
 
         // 回写
         // 为了复用原先的相应结果，此处直接使用 rpc response

@@ -7,6 +7,7 @@ import com.github.zou.rpc.common.config.component.RpcAddress;
 import com.github.zou.rpc.common.remote.netty.impl.DefaultNettyClient;
 import com.github.zou.rpc.common.rpc.domain.RpcChannelFuture;
 import com.github.zou.rpc.common.rpc.domain.impl.DefaultRpcChannelFuture;
+import com.github.zou.rpc.common.util.Waits;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
@@ -18,6 +19,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * channel 工具类
@@ -114,6 +116,9 @@ public final class ChannelHandlers {
         // 循环中每次都需要一个新的 handler
         DefaultRpcChannelFuture future = DefaultRpcChannelFuture.newInstance();
         DefaultNettyClient nettyClient = DefaultNettyClient.newInstance(rpcAddress.address(), rpcAddress.port(), channelHandler);
+
+        // 等待100 ms，避免在注册中心启动之前连接报错
+        Waits.waits(100, TimeUnit.MILLISECONDS);
         ChannelFuture channelFuture = nettyClient.call();
 
         future.channelFuture(channelFuture)

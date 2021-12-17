@@ -7,13 +7,29 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="rpc-common" />
+        <module name="spring-server" />
         <module name="rpc-all" />
         <module name="rpc-client" />
         <module name="rpc-server" />
-        <module name="rpc-test" />
-        <module name="register-choice-test" />
+        <module name="rpc-config" />
+        <module name="test-api" />
+        <module name="spring-client" />
         <module name="rpc-register" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="register-choice-test" target="8" />
+      <module name="rpc-test" target="8" />
+      <module name="spring-demo" target="1.8" />
+      <module name="spring-test" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="spring-client" options="-parameters" />
+      <module name="spring-demo" options="-parameters" />
+      <module name="spring-server" options="-parameters" />
+      <module name="spring-test" options="-parameters" />
+    </option>
   </component>
 </project>

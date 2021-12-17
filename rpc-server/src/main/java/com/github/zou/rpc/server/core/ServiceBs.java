@@ -60,7 +60,7 @@ public class ServiceBs implements ServiceRegistry {
      *
      * @since 0.0.6
      */
-    private static final ServiceBs INSTANCE = new ServiceBs();
+    private static  ServiceBs INSTANCE;
 
     /**
      * rpc 服务端端口号
@@ -122,10 +122,10 @@ public class ServiceBs implements ServiceRegistry {
      */
     private ServerRegisterManager serverRegisterManager;
 
-    private ServiceBs() {
+    private ServiceBs(int port) {
         // 初始化默认参数
         this.serviceConfigList = new ArrayList<>();
-        this.rpcPort = 9527;
+        this.rpcPort = port;
         this.registerCenterList = Guavas.newArrayList();
 
         // manager 初始化
@@ -138,8 +138,13 @@ public class ServiceBs implements ServiceRegistry {
         this.delayExecutor = new DelayQueueExecutor();
     }
 
-    public static ServiceBs getInstance() {
-        return INSTANCE;
+    public static ServiceBs getInstance(int port) {
+      synchronized (ServiceBs.class){
+          if(null == INSTANCE){
+              INSTANCE = new ServiceBs(port);
+          }
+          return INSTANCE;
+      }
     }
 
     @Override
@@ -170,6 +175,10 @@ public class ServiceBs implements ServiceRegistry {
     @Override
     @SuppressWarnings("unchecked")
     public synchronized ServiceBs register(final String serviceId, final Object serviceImpl) {
+        return this.register(serviceId,serviceImpl,0);
+    }
+
+    public synchronized ServiceBs register(final String serviceId, final Object serviceImpl,long delayInMills) {
         ArgUtil.notEmpty(serviceId, "serviceId");
         ArgUtil.notNull(serviceImpl, "serviceImpl");
 
@@ -178,7 +187,7 @@ public class ServiceBs implements ServiceRegistry {
         serviceConfig.id(serviceId)
                 .reference(serviceImpl)
                 .register(true)
-                .delay(0);
+                .delay(delayInMills);
 
         addServiceConfig(serviceConfig);
 
@@ -241,8 +250,14 @@ public class ServiceBs implements ServiceRegistry {
         return this;
     }
 
+    @Override
+    public boolean isExpose() {
+
+        return serviceConfigList.size() >= 1;
+    }
+
     /**
-     * 注冊服務到注册中心
+     * 注册服务到注册中心
      * （1）循环服务列表注册到配置中心列表
      * （2）如果 register 为 false，则不进行注册
      * （3）后期可以添加延迟暴露，但是感觉意义不大。
