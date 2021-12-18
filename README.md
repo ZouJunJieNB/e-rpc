@@ -1,7 +1,7 @@
 # e-rpc
 e-prc是基于netty4 实现的 java rpc 远程调用框架。
 
-致力成为一个中小企业定制化轻量级高效的rpc框架。
+一个定制化轻量级高效的rpc框架。
 
 代码实现功能，主要参考 <a href="https://dubbo.apache.org/zh/docs/introduction/" target="_blank">apache dubbo</a>, <a href="https://github.com/houbb/rpc" target="_blank">houbb/rpc</a>
 
