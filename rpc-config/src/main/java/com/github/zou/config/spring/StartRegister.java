@@ -24,7 +24,8 @@ public class StartRegister  {
 
     public void startRegister(){
         URL url = new URL(registerApplicationConfig.getUrl());
-        RegisterBs.newInstance().setTypeEnum(registerApplicationConfig.getRegister()).setUrl(url).start();
+        url.setPassword(registerApplicationConfig.getPassword());
+        RegisterBs.newInstance().setTypeEnum(registerApplicationConfig.getType()).setUrl(url).start();
         isStart = true;
     }
 }

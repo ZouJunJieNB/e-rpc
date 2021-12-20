@@ -1,6 +1,8 @@
 package com.github.zou.rpc.common.domain.message;
 
 
+import com.github.zou.rpc.common.constant.MessageTypeConst;
+
 import java.io.Serializable;
 
 /**

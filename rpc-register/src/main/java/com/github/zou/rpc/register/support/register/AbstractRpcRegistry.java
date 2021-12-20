@@ -180,7 +180,7 @@ public abstract class AbstractRpcRegistry implements RpcRegistry {
     /**
      * 调用具体注册中心的服务
      * @param serviceId
-     * @return
+     * @return 服务列表
      */
     public abstract List<ServiceEntry> doLookUp(String serviceId);
 
@@ -196,7 +196,7 @@ public abstract class AbstractRpcRegistry implements RpcRegistry {
         log.debug("[HEARTBEAT] 接收到服务端的心跳 {}", heartbeatBody);
     }
 
-    protected List<ServiceEntry> convertServiceEntry(List<String> stringList,String serverId){
+    protected List<ServiceEntry> convertServiceEntry(Collection<String> stringList,String serverId){
         List<ServiceEntry> resultList = Lists.newArrayList();
 
         if(CollectionUtil.isEmpty(stringList)){

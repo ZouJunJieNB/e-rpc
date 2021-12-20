@@ -91,7 +91,7 @@ public class ServiceAnnotationBeanPostProcessor implements BeanDefinitionRegistr
 
     /**
      * 这里的初始化通过 {@link ERpcComponentScanRegistrar} 完成
-     * @param packagesToScan
+     * @param packagesToScan 路径
      */
     public ServiceAnnotationBeanPostProcessor(Set<String> packagesToScan){
         this.packagesToScan = packagesToScan;

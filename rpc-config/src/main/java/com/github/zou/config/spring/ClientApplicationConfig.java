@@ -20,19 +20,16 @@ public class ClientApplicationConfig {
 
     /**
      * 超时时间
-     * @return
      */
     private long timeout;
 
     /**
      * 调用方式
-     * @return
      */
     private String callType;
 
     /**
      * 失败类型
-     * @return
      */
     private String failType;
 

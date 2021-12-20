@@ -39,7 +39,7 @@ public final class IpUtils {
 
     /**
      * 注册中心默认端口
-     * @return
+     * @return 返回端口
      */
     public static int registerPort(){
         return registerPort;
@@ -47,7 +47,7 @@ public final class IpUtils {
 
     /**
      * 获取注册中心默认
-     * @return
+     * @return 地址
      */
     public static String registerAddress() {
         try {

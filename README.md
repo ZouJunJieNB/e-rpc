@@ -1,7 +1,7 @@
 # e-rpc
 e-prc是基于netty4 实现的 java rpc 远程调用框架。
 
-目标: 成为一个中小企业定制化轻量级高效的rpc框架。
+一个定制化轻量级高效的rpc框架。
 
 代码实现功能，主要参考 <a href="https://dubbo.apache.org/zh/docs/introduction/" target="_blank">apache dubbo</a>, <a href="https://github.com/houbb/rpc" target="_blank">houbb/rpc</a>
 
@@ -13,7 +13,7 @@ ___
 
 * timeout 超时处理
 
-* 本地注册中心、zookeeper注册中心
+* 本地注册中心、zookeeper、redis注册中心
 
 * load balance 负载均衡
 
@@ -30,3 +30,110 @@ ___
 * filter 过滤器
 
 * heartbeat 服务端心跳
+
+* springboot 整合
+
+## springboot快速入门
+___
+
+```xml
+   <dependency>
+       <groupId>io.github.zoujunjienb</groupId>
+       <artifactId>rpc-all</artifactId>
+       <version>1.0.4-RELEASE</version>
+   </dependency>
+```
+
+## 测试
+___
+### 项目结构
+```java
+e-prc-test-project
+├── srpring-boot-server
+│   └── src
+│       └── com.zou.springbootserver
+            ├── HelloServiceImpl.java  
+│           ├── SrpringBootServerApplication.java
+├── srpring-boot-client
+│   └── src      
+│       └── com.zou.springbootclient
+│           ├── SrpringBootClientApplication.java
+├── test-api
+│   └── src
+│       └── com.zou
+│           ├── HelloService.java
+
+
+```
+___
+### 创建公共api模块 test-api ，并创建HelloService接口
+```java
+public interface HelloService {
+
+     String sayHello();
+
+}
+```
+___
+### 创建服务提供者模块 spring-boot-server ，并创建HelloService接口的实现类
+```java
+/**
+ * 被@ERpcService标注的类会自动加入spring容器，并且暴露服务。
+ */
+@ERpcService
+public class HelloServiceImpl implements HelloService {
+    @Override
+    public String sayHello() {
+        return "hello";
+    }
+}
+
+```
+### application.properties, 如果是yml格式变下，属性一样
+```properties
+# rpc 服务端口
+e-rpc.application.server.port=8022
+# 注册中心的地址:,集群：127.0.0.1:2181,127.0.0.1:2182,...
+e-rpc.application.register.url=127.0.0.1:2181
+# zookeeper、redis
+e-rpc.application.register.type=zookeeper
+```
+___
+### 创建服务消费者模块 spring-boot-client ，并创建启动类
+```java
+/**
+ * @EnableERpc 开启rpc服务。扫描该类下所有包含 @ERpcReference注解的属性
+ */
+@SpringBootApplication
+@RestController
+@EnableERpc
+public class SrpringBootClientApplication {
+
+    /**
+     * ERpcReference
+     */
+    @ERpcReference
+    private HelloService helloService;
+
+    @GetMapping("hello")
+    public String hello(){
+        return helloService.sayHello();
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(SrpringBootClientApplication.class, args);
+    }
+
+}
+
+```
+### application.properties, 如果是yml格式变下，属性一样
+```properties
+# rpc 服务端口
+e-rpc.application.server.port=8021
+# 注册中心的地址:,集群：127.0.0.1:2181,127.0.0.1:2182,...
+e-rpc.application.register.url=127.0.0.1:2181
+# zookeeper、redis
+e-rpc.application.register.type=zookeeper
+```
+

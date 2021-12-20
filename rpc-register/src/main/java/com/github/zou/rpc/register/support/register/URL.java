@@ -21,7 +21,7 @@ public final class URL implements Serializable {
 
     private final String username;
 
-    private final String password;
+    private String password;
 
     /**
      * 127.0.0.1:8080,xxx:xxx
@@ -122,5 +122,9 @@ public final class URL implements Serializable {
         }
         return (username == null ? "" : username)
                 + ":" + (password == null ? "" : password);
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

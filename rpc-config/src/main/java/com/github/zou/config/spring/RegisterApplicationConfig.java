@@ -14,11 +14,11 @@ import java.util.Map;
 @ConfigurationProperties(value = "e-rpc.application.register")
 public class RegisterApplicationConfig {
 
-
-
     private String url;
 
-    private String register;
+    private String type;
+
+    private String password;
 
     public String getUrl() {
         return url;
@@ -28,12 +28,20 @@ public class RegisterApplicationConfig {
         this.url = url;
     }
 
-    public RegisterTypeEnum getRegister() {
-        return registerNameMaps.getOrDefault(register,RegisterTypeEnum.DEFAULT);
+    public RegisterTypeEnum getType() {
+        return registerNameMaps.getOrDefault(type,RegisterTypeEnum.DEFAULT);
     }
 
-    public void setRegister(String register) {
-        this.register = register;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public static String redis = "redis";

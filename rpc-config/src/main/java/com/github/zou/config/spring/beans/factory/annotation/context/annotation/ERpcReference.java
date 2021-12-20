@@ -19,29 +19,28 @@ public @interface ERpcReference {
 
     /**
      * 接口的class，默认void的class.暂时不作用
+     * @return 值
      */
     Class<?> interfaceClass() default void.class;
 
     /**
      * 服务名称
+     * @return 值
      */
     String serverId() default "";
 
     /**
      * 超时时间
-     * @return
      */
     long timeout() default defaultTimeout;
 
     /**
      * 调用方式
-     * @return
      */
     CallTypeEnum callType() default CallTypeEnum.SYNC;
 
     /**
      * 失败类型
-     * @return
      */
     FailTypeEnum failType() default FailTypeEnum.FAIL_OVER;
 

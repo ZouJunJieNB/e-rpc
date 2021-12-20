@@ -12,8 +12,8 @@
         <module name="rpc-client" />
         <module name="rpc-server" />
         <module name="rpc-config" />
-        <module name="test-api" />
         <module name="spring-client" />
+        <module name="test-api" />
         <module name="rpc-register" />
       </profile>
     </annotationProcessing>

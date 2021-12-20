@@ -1,5 +1,6 @@
 package com.github.zou.rpc.client.support.filter;
 
+import com.github.houbb.heaven.support.pipeline.Pipeline;
 import com.github.zou.rpc.client.proxy.RemoteInvokeContext;
 
 /**

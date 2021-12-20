@@ -18,7 +18,6 @@ import java.util.List;
  * （3）前期尽可能的少暴露方法。
  * @author zou
  * @since 0.0.6
- * @see ServiceRegistry 服务注册，将服务信息放在这个类中，进行统一的管理。
  */
 public interface ServiceFactory {
 

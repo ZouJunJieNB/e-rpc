@@ -5,10 +5,13 @@ import com.github.zou.rpc.register.constant.enums.RegisterTypeEnum;
 import com.github.zou.rpc.register.simple.client.RegisterClientService;
 import com.github.zou.rpc.register.simple.server.RegisterServerService;
 import com.github.zou.rpc.register.spi.RpcRegistry;
+import com.github.zou.rpc.register.support.register.redis.RedisRegistry;
 import com.github.zou.rpc.register.support.register.zookeeper.ZookeeperRegistry;
 
 import java.util.Collections;
 import java.util.List;
+
+import static com.github.zou.rpc.register.constant.enums.RegisterTypeEnum.DEFAULT;
 
 /**
  * @author zou
@@ -19,13 +22,16 @@ public class RegistryFactory {
     private final RpcRegistry rpcRegister;
 
     public RegistryFactory(URL url, RegisterTypeEnum type, RegisterServerService registerServerService, RegisterClientService registerClientService){
-
+        if(!(type == DEFAULT)){
+            checkUrl(url);
+        }
 
         switch (type){
-
             case ZOOKEEPER:
-                checkUrl(url);
                 rpcRegister = new ZookeeperRegistry(url,registerServerService,registerClientService);
+                break;
+            case REDIS:
+                rpcRegister = new RedisRegistry(url,registerServerService,registerClientService);
                 break;
             default:
                 rpcRegister = new AbstractRpcRegistry(registerServerService,registerClientService) {

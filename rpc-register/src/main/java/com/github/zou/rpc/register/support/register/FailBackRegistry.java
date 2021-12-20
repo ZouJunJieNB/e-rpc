@@ -1,9 +1,13 @@
 package com.github.zou.rpc.register.support.register;
 
+import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.zou.rpc.common.domain.entry.ServiceEntry;
 import com.github.zou.rpc.register.simple.client.RegisterClientService;
 import com.github.zou.rpc.register.simple.server.RegisterServerService;
 import io.netty.channel.Channel;
+
+import static com.github.zou.rpc.common.constant.PunctuationConst.*;
+import static com.github.zou.rpc.common.constant.PunctuationConst.SLASH;
 
 
 /**
@@ -14,6 +18,7 @@ import io.netty.channel.Channel;
  * @since 1.0.0
  */
 public abstract class FailBackRegistry extends AbstractRpcRegistry {
+
 
     public FailBackRegistry(RegisterServerService registerServerService, RegisterClientService registerClientService) {
         super(registerServerService, registerClientService);
@@ -44,6 +49,9 @@ public abstract class FailBackRegistry extends AbstractRpcRegistry {
         super.unSubscribe(clientEntry,channel);
         doUnSubscribe(clientEntry,channel);
     }
+
+
+
 
     // ==== 模板方法 ====
 

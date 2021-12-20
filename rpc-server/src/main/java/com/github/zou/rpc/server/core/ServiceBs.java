@@ -15,6 +15,7 @@ import com.github.zou.rpc.common.remote.netty.NettyServer;
 import com.github.zou.rpc.common.remote.netty.handler.ChannelHandlers;
 import com.github.zou.rpc.common.remote.netty.impl.DefaultNettyClient;
 import com.github.zou.rpc.common.remote.netty.impl.DefaultNettyServer;
+import com.github.zou.rpc.common.rpc.domain.RpcRequest;
 import com.github.zou.rpc.common.support.delay.DelayExecutor;
 import com.github.zou.rpc.common.support.delay.DelayQueueExecutor;
 import com.github.zou.rpc.common.support.hook.ShutdownHooks;
@@ -199,7 +200,7 @@ public class ServiceBs implements ServiceRegistry {
      * （1）主要用于后期服务调用
      * （2）如何根据 id 获取实现？非常简单，id 是唯一的。
      * 有就是有，没有就抛出异常，直接返回。
-     * （3）如果根据 {@link com.github.houbb.rpc.common.rpc.domain.RpcRequest} 获取对应的方法。
+     * （3）如果根据 {@link RpcRequest} 获取对应的方法。
      * <p>
      * 3.1 根据 serviceId 获取唯一的实现
      * 3.2 根据 {@link Class#getMethod(String, Class[])} 方法名称+参数类型唯一获取方法

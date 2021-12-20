@@ -12,6 +12,7 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/spring-server/pom.xml" />
         <option value="$PROJECT_DIR$/spring-client/pom.xml" />
+        <option value="$PROJECT_DIR$/rpc-config/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

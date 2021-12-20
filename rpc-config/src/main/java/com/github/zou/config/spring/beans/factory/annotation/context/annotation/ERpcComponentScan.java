@@ -32,7 +32,7 @@ public @interface ERpcComponentScan {
     String[] basePackages() default {};
 
     /**
-     * 键入{@link #basePackages()}的安全替代项，用于指定要扫描带注释的{@link ERpcService}类的包。将扫描每个指定类别的包。
+     * 键入 #basePackages 的安全替代项，用于指定要扫描带注释的{@link ERpcService}类的包。将扫描每个指定类别的包。
      *
      * @return 要扫描的基本包中的类
      */

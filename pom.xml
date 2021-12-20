@@ -5,10 +5,10 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.zou</groupId>
+    <groupId>io.github.zoujunjienb</groupId>
     <artifactId>e-rpc_1.0.0</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.4-RELEASE</version>
     <modules>
         <module>rpc-all</module>
         <module>rpc-client</module>
@@ -21,6 +21,24 @@
 
     <properties>
 
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <!--============================== All Plugins START ==============================-->
+        <plugin.compiler.version>3.2</plugin.compiler.version>
+        <plugin.compiler.version>3.2</plugin.compiler.version>
+        <plugin.surefire.version>2.18.1</plugin.surefire.version>
+        <plugin.surefire.skip-it>false</plugin.surefire.skip-it>
+        <plugin.surefire.ignore-failure>false</plugin.surefire.ignore-failure>
+
+        <plugin.maven-source-plugin.version>3.0.1</plugin.maven-source-plugin.version>
+        <plugin.maven-javadoc-plugin.version>2.9.1</plugin.maven-javadoc-plugin.version>
+        <plugin.maven-gpg-plugin.version>1.5</plugin.maven-gpg-plugin.version>
+
+        <!--============================== MAIN ==============================-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.compiler.level>1.7</project.compiler.level>
+
+
         <!--============================== INTER ==============================-->
         <heaven.version>0.1.144</heaven.version>
         <log-integration.version>1.1.8</log-integration.version>
@@ -30,8 +48,9 @@
         <lombok.version>1.16.16</lombok.version>
         <curator-recipes.version>4.1.0</curator-recipes.version>
         <spring-boot-starter.version>2.6.1</spring-boot-starter.version>
-    </properties>
 
+        <jedis_version>2.9.0</jedis_version>
+    </properties>
     <dependencyManagement>
         <dependencies>
 
@@ -63,7 +82,7 @@
             </dependency>
 
             <dependency>
-                <groupId>com.github.zou</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>rpc-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -122,11 +141,154 @@
                 <version>${spring-boot-starter.version}</version>
             </dependency>
 
-
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis_version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
 
+
+    <build>
+        <plugins>
+            <!--compiler plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${plugin.compiler.version}</version>
+                <configuration>
+                    <source>${project.compiler.level}</source>
+                    <target>${project.compiler.level}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${plugin.surefire.version}</version>
+                <configuration>
+                    <skipTests>${plugin.surefire.skip-it}</skipTests>
+                    <testFailureIgnore>${plugin.surefire.ignore-failure}</testFailureIgnore>
+                </configuration>
+            </plugin>
+
+            <!--mvn cobertura:cobertura coveralls:report -DrepoToken=yourcoverallsprojectrepositorytoken-->
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>4.3.0</version>
+            </plugin>
+
+
+            <!--mvn clean install sonar:sonar -Dmaven.test.skip=true -Dsonar.host.url=http://localhost:9000-->
+            <!--sonar-->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.1.1</version>
+            </plugin>
+
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${plugin.maven-javadoc-plugin.version}</version>
+            </plugin>
+
+        </plugins>
+    </build>
+
+
+    <name>e-rpc</name>
+    <description>The remote process call framework.</description>
+    <url>https://github.com/ZouJunJieNB/e-rpc</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>zoujunjie</name>
+            <email>1453002591@qq.com</email>
+            <url>https://github.com/ZouJunJieNB</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/ZouJunJieNB/e-rpc</url>
+        <connection>https://github.com/ZouJunJieNB/e-rpc.git</connection>
+        <developerConnection>https://github.com/ZouJunJieNB</developerConnection>
+    </scm>
+
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- Source -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>${plugin.maven-source-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${plugin.maven-javadoc-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- GPG -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${plugin.maven-gpg-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>snapshots</id>
+                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>snapshots</id>
+                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 
 
 </project>
