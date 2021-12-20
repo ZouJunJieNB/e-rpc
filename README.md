@@ -32,3 +32,14 @@ ___
 * heartbeat 服务端心跳
 
 * springboot 整合
+
+## springboot快速入门
+___
+
+```
+<dependency>
+    <groupId>com.github.houbb</groupId>
+    <artifactId>rpc-all</artifactId>
+    <version>${rpc.version}</version>
+</dependency>
+```
