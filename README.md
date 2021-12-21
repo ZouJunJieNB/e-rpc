@@ -31,20 +31,12 @@ ___
 
 * heartbeat 服务端心跳
 
-* springboot 整合
+* springboot:2.6.1 整合
 
 ## springboot快速入门
-___
 
-```xml
-   <dependency>
-       <groupId>io.github.zoujunjienb</groupId>
-       <artifactId>rpc-all</artifactId>
-       <version>1.0.4-RELEASE</version>
-   </dependency>
-```
 
-## 测试
+## 构建项目测试
 ___
 ### 项目结构
 ```java
@@ -89,14 +81,35 @@ public class HelloServiceImpl implements HelloService {
 }
 
 ```
+### spring-boot-server 的pom.xml
+___
+
+```xml
+
+<!--rpc依赖-->
+ <dependency>
+    <groupId>io.github.zoujunjienb</groupId>
+    <artifactId>rpc-all</artifactId>
+    <version>1.0.4-RELEASE</version>
+</dependency>
+
+<!-- 公共api接口模块-->
+<dependency>
+    <groupId>com.zou</groupId>
+    <artifactId>test-api</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
 ### application.properties, 如果是yml格式变下，属性一样
 ```properties
 # rpc 服务端口
 e-rpc.application.server.port=8022
 # 注册中心的地址:,集群：127.0.0.1:2181,127.0.0.1:2182,...
 e-rpc.application.register.url=127.0.0.1:2181
-# zookeeper、redis
+# 注册中心类型,目前支持: zookeeper、redis
 e-rpc.application.register.type=zookeeper
+# 注册中心密码，没有可不填
+e-rpc.application.register.password=123456
 ```
 ___
 ### 创建服务消费者模块 spring-boot-client ，并创建启动类
@@ -126,6 +139,33 @@ public class SrpringBootClientApplication {
 
 }
 
+
+```
+
+### spring-boot-client 的pom.xml
+___
+
+```xml
+
+<!--rpc依赖-->
+ <dependency>
+    <groupId>io.github.zoujunjienb</groupId>
+    <artifactId>rpc-all</artifactId>
+    <version>1.0.4-RELEASE</version>
+</dependency>
+
+<!-- 公共api接口模块-->
+<dependency>
+    <groupId>com.zou</groupId>
+    <artifactId>test-api</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
 ```
 ### application.properties, 如果是yml格式变下，属性一样
 ```properties
@@ -133,7 +173,9 @@ public class SrpringBootClientApplication {
 e-rpc.application.server.port=8021
 # 注册中心的地址:,集群：127.0.0.1:2181,127.0.0.1:2182,...
 e-rpc.application.register.url=127.0.0.1:2181
-# zookeeper、redis
+# 注册中心类型,目前支持: zookeeper、redis
 e-rpc.application.register.type=zookeeper
+# 注册中心密码，没有可不填
+e-rpc.application.register.password=123456
 ```
 
